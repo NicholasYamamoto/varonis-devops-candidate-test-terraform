@@ -8,6 +8,11 @@ variable "cluster_name" {
   description = "The name given to the cluster"
 }
 
+variable "cluster_version" {
+  type        = string
+  description = "The version to use for the EKS cluster"
+}
+
 variable "node_group_name" {
   type        = string
   description = "The name of the Node Group created in the cluster"
@@ -36,4 +41,9 @@ variable "subnet_private_c_1a" {
 variable "vpc_id" {
   type        = string
   description = "The ID of the testVPC"
+}
+
+variable "eks_ecr_image_repo" {
+  type        = string
+  description = "The ECR image repository required by EKS"
 }

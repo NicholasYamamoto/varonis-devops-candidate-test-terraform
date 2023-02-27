@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nick-web-app
+  namespace: test-az-b-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nick-web-app
+  template:
+    metadata:
+      labels:
+        app: nick-web-app
+    spec:
+      containers:
+      - name: nick-web-app-container
+        image: 738013621832.dkr.ecr.us-east-1.amazonaws.com/nick-ecr:v0.1.1
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nick-web-app
+  namespace: test-az-b-2
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-subnets: subnet-055c4c960795c5386, subnet-0cfdfda4afc9aaad3
+spec:
+  type: LoadBalancer
+  selector:
+    app: nick-web-app
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: nick-web-app
+#   namespace: kube-system
+#   labels:
+#     name: nick-web-app-ingress
+#   annotations:
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/subnets: subnet-055c4c960795c5386, subnet-0cfdfda4afc9aaad3
+# spec:
+#   ingressClassName: alb
+#   rules:
+#   - http:
+#       paths:
+#       - pathType: Exact
+#         path: /test1
+#         backend:
+#           service:
+#             name: nick-web-app-service
+#             port:
+#               number: 5000
+#       - pathType: Exact
+#         path: /test2
+#         backend:
+#           service:
+#             name: nick-web-app-service
+#             port:
+#               number: 5000
