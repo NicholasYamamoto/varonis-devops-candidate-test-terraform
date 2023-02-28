@@ -19,8 +19,7 @@ module "eks" {
 
   subnet_ids = [
     var.subnet_private_a_1a,
-    var.subnet_private_b_1b,
-    var.subnet_private_c_1a
+    var.subnet_private_b_1b
   ]
 
   enable_irsa = true
@@ -31,8 +30,7 @@ module "eks" {
   cluster_encryption_config   = {}
 
   eks_managed_node_group_defaults = {
-    # TODO: Might need to add create_iam_role = false and that stuff here!
-    disk_size = 10
+    disk_size = 5
   }
 
   eks_managed_node_groups = {
@@ -50,14 +48,14 @@ module "eks" {
     }
   }
 
-  # node_security_group_additional_rules = {
-  #   ingress_allow_access_from_control_plane = {
-  #     type                          = "ingress"
-  #     protocol                      = "tcp"
-  #     from_port                     = 9443
-  #     to_port                       = 9443
-  #     source_cluster_security_group = true
-  #     description                   = "Allow access from control plane to webhook port of AWS load balancer controller"
-  #   }
-  # }
+  node_security_group_additional_rules = {
+    ingress_allow_access_from_control_plane = {
+      type                          = "ingress"
+      protocol                      = "tcp"
+      from_port                     = 9443
+      to_port                       = 9443
+      source_cluster_security_group = true
+      description                   = "Allow access from control plane to webhook port of AWS load balancer controller"
+    }
+  }
 }

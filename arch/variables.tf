@@ -33,11 +33,6 @@ variable "subnet_private_b_1b" {
   description = "private-b subnet in AZ us-east-1b in the testVPC"
 }
 
-variable "subnet_private_c_1a" {
-  type        = string
-  description = "private-c subnet in the testVPC"
-}
-
 variable "vpc_id" {
   type        = string
   description = "The ID of the testVPC"

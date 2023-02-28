@@ -1,3 +1,4 @@
+# Create the IAM Role for Service Account (IRSA) role for the Load Balancer Controller
 module "aws_load_balancer_controller_irsa_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "5.3.1"
@@ -14,6 +15,7 @@ module "aws_load_balancer_controller_irsa_role" {
   }
 }
 
+# Create an AWS Load Balancer Controller deployed using a Helm chart
 resource "helm_release" "aws_load_balancer_controller" {
   name = "aws-load-balancer-controller"
 
